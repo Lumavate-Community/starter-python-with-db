@@ -1,11 +1,13 @@
 
+
+
 ## Adding a RESTful object
 
 This is a guide to adding a restful object with a single property, name, within a python microservice.
 
 To add a restful object, the first step is to add a migration. To add a migration, execute the following alembic command:
 ```bash
-alembic revision -m Example
+luma microservice-version exec "alembic revision -m Example"
 ```
 This will generate a file inside app/alembic/versions. Inside this file, we will specify the upgrade and downgrade functions.
 ```python
@@ -19,6 +21,12 @@ def upgrade():
 def downgrade():
     op.drop_table('stuff')
 ```
+Then, run the following command to upgrade the table.
+```bash
+luma microservice-version exec "alembic upgrade head"
+```
+
+
 Then, we will define a model to represent a record inside of the stuff table. It belongs in the models directory.
 ```python
 class Thing(db.Model):
@@ -81,6 +89,7 @@ In this example, our routes do not require any authentication.
 You may access this command in VScode through the command pallette. (ctrl-shift-p)/(cmd-shift-p).
 
 
+You can read more about the container utility libraries at https://developer.lumavate.com
 
 
 
