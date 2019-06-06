@@ -9,6 +9,9 @@ To add a restful object, the first step is to add a migration. To add a migratio
 ```bash
 luma microservice-version exec "alembic revision -m Example"
 ```
+### IMPORTANT:
+  When using an editable container, you must click the refresh button to see the file that is created by the alembic command.
+
 This will generate a file inside app/alembic/versions. Inside this file, we will specify the upgrade and downgrade functions.
 ```python
 def upgrade():
@@ -25,7 +28,6 @@ Then, run the following command to upgrade the table.
 ```bash
 luma microservice-version exec "alembic upgrade head"
 ```
-
 
 Then, we will define a model to represent a record inside of the stuff table. It belongs in the models directory.
 ```python
