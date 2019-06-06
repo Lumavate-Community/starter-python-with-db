@@ -1,175 +1,47 @@
 # Email Service
 
-## Routes
+## Adding a new api Route
 
-### Route: /send
+```python
 
-#### Call: POST
+@lumavate_route('/helloworld', ['GET'], RequestType.api, [SecurityType.none])
+def helloworld():
+  return "hello!"
 
-*** Communication: server-server only
-
-Purpose: Send an email to a list of recipients.
-
-Headers:<br/>
-Authorization: Bearer{{access_token}}<br/>
-Content-Type: application/json
-
-Without Attachment:<br/>
-Body:<br/>
-```bash
-{
-	"recipients":"{{recipient_email_addresses}}",
-	"subject":"{{email_subject}}",
-	"htmlContent":"{{email_html_content}}",
-	"textContent":"{{email_text_content}}"
-}
 ```
+Routes go in the routes directory.
+To add a route to our microservice, we will use a function decorator similar to flask. However, the lumavate platform provides a special decorator with more functionality.
+In this example, our route, /helloworld, only GET requests are allowed. It is an api route, and it does not require any authentication.
 
-Expected Response:
-```bash
-{
-  "payload": {
-    "data": {
-      "hasAttachment": false,
-      "html_content": "{{email_html_content}}",
-      "id": 1,
-      "isBaseCredentials": true,
-      "messageId": "dev-test",
-      "namespace": "abc",
-      "sentAt": "Mon, 11 Mar 2019 14:31:36 GMT",
-      "sentBy": "ic/magiclink|email|1",
-      "sentFrom": "noreply@localhost:5001",
-      "sentTo": "{{recipient_email_addresses}}",
-      "text_content": "{{email_text_content}}"
-    }
-  }
-}
+### IMPORTANT:
+  When using an editable container, you must run the register routes command any time a route is created, deleted, or altered.
+You may access this command in VScode through the command pallette. (ctrl-shift-p)/(cmd-shift-p).
+
+
+
+
+
+## Adding a new api Route
+
+```python
+
+@lumavate_route('/helloworld', ['GET'], RequestType.api, [SecurityType.none])
+def helloworld():
+  return "hello!"
+
 ```
+Routes go in the routes directory.
+To add a route to our microservice, we will use a function decorator similar to flask. However, the lumavate platform provides a special decorator with more functionality.
+In this example, our route, /helloworld, only GET requests are allowed. It is an api route, and it does not require any authentication.
+
+### IMPORTANT:
+  When using an editable container, you must run the register routes command any time a route is created, deleted, or altered.
+You may access this command in VScode through the command pallette. (ctrl-shift-p)/(cmd-shift-p).
 
 
-With Attachment:<br/>
-Body:
-```bash
-{
-	"recipients":"{{recipient_email_addresses}}",
-	"textContent":"{{email_text_content}}",
-  "htmlContent":"{{email_html_content}}",
-	"subject":"{{email_subject}}",
-	"attachment": {
-		"filename":"{{attachment_name}}",
-		"data":"{{base64_file_data}}"
-	}
-}
-```
-
-Expected Response:
-```bash
-{
-  "payload": {
-    "data": {
-      "hasAttachment": true,
-      "html_content": "{{email_html_content}}",
-      "id": 1,
-      "isBaseCredentials": true,
-      "messageId": "dev-test",
-      "namespace": "abc",
-      "sentAt": "Mon, 11 Mar 2019 14:31:36 GMT",
-      "sentBy": "ic/magiclink|email|1",
-      "sentFrom": "noreply@localhost:5001",
-      "sentTo": "{{recipient_email_addresses}}",
-      "text_content": "{{email_text_content}}"
-    }
-  }
-}
-```
 
 
-### Route: /templates/{{template_id}}/send
-
-#### Call: POST
-
-Purpose: Send an email to a list of recipients using an email template.  The properties of the email template can be set within the microservice's property sheet.
-
-Headers:<br/>
-Authorization: Bearer{{access_token}}<br/>
-Content-Type: application/json
-
-Body: The recipients email addresses must be set, along with any properties set in the template data.
-
-```bash
-{
-	"recipients":"{{email_addresses}}",
-	"data":{
-		"{{templateFieldNames}}":"{{template_field_data}}"
-	}
-}
-```
-
-Expected Response:
-```bash
-{
-  "payload": {
-    "data": {
-      "hasAttachment": false,
-      "html_content": "{{html_content}}",
-      "id": 1,
-      "isBaseCredentials": true,
-      "messageId": "dev-test",
-      "namespace": "abc",
-      "sentAt": "Mon, 11 Mar 2019 15:13:41 GMT",
-      "sentBy": "ic/magiclink|email|1",
-      "sentFrom": "noreply@localhost:5001",
-      "sentTo": "{{recipient_email_addresses}}",
-      "text_content": "{{text_content}}"
-    }
-  }
-}
-```
 
 
-### Route: /history
 
-#### Call: GET
 
-Purpose: View the history of emails sent using this microservice.
-
-Headers:<br/>
-Authorization: Bearer{{access_token}}<br/>
-Content-Type: application/json
-
-Expected Response:
-```bash
-{
-  "payload": {
-    "currentItemCount": 2,
-    "data": [
-      {
-        "hasAttachment": false,
-        "html_content": "{{email_html_content}}",
-        "id": 1,
-        "isBaseCredentials": true,
-        "messageId": "dev-test",
-        "namespace": "abc",
-        "sentAt": "Fri, 08 Mar 2019 20:20:50 GMT",
-        "sentBy": "ic/magiclink|email|1",
-        "sentFrom": "noreply@localhost:5001",
-        "sentTo": "{{recipient_email_addresses}}",
-        "text_content": "{{email_text_content}}"
-      },
-      {
-        "hasAttachment": false,
-        "html_content": "{{email_html_content}}",
-        "id": 2,
-        "isBaseCredentials": true,
-        "messageId": "dev-test",
-        "namespace": "abc",
-        "sentAt": "Fri, 08 Mar 2019 20:20:50 GMT",
-        "sentBy": "ic/magiclink|email|1",
-        "sentFrom": "noreply@localhost:5001",
-        "sentTo": "{{recipient_email_addresses}}",
-        "text_content": "{{email_text_content}}"
-      }
-    ]
-  }
-}
-```
