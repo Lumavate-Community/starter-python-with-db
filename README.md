@@ -56,7 +56,7 @@ Finally, we must add routes to get, post, put, and delete these objects.
 ```python
 from lumavate_service_util import lumavate_route, SecurityType, RequestType
 from flask import render_template, g
-from models import Thing
+from controllers import Thing
 
 @lumavate_route('/', ['GET'], RequestType.page, [SecurityType.jwt])
 def root():
@@ -65,14 +65,14 @@ def root():
 @lumavate_route('/things', ['GET','POST'], RequestType.api, [SecurityType.none])
 def allthings():
   if request.method == 'GET':
-    return Thing().get_all()
+    return Thing().get_collection()
   else:
     return Thing().post()
 
 @lumavate_route('/things/<int:id>', ['GET','PUT','DELETE'], RequestType.api, [SecurityType.none])
 def onething():
   if request.method == 'GET':
-    return Thing().get(id)
+    return Thing().get_single(id)
   elif request.method == 'PUT':
     return Thing().put(id)
   else:
