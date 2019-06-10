@@ -31,6 +31,8 @@ luma microservice-version exec "alembic upgrade head"
 
 Then, we will define a model to represent a record inside of the stuff table. It belongs in the models directory.
 ```python
+from app import db
+
 class Thing(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
@@ -42,29 +44,13 @@ class Thing(db.Model):
     @classmethod
     def get(cls, id):
         return cls.get_all().filter_by(id=id).first()
-    @classmethod
-    def post(cls):
-        thing = Thing(name = request.form['name'],org_id = g.org_id)
-        db.session.add(thing)
-        db.session.flush()
-        return thing
-    @classmethod
-    def delete(cls,id):
-        cls.get(id).delete()
-        db.session.commit()
-    @classmethod
-    def put(cls,id):
-        thing = cls.get(id)
-        if 'name' in request.form:
-            thing.name = request.form['name']
-            db.session.flush()
-        return thing
 
     def to_json(self):
         return {
             'id': make_id(self.id, self.__class__),
             'name': self.name
         }
+
 ```
 Finally, we must add routes to get, post, put, and delete these objects.
 ```python
