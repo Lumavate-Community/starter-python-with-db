@@ -13,6 +13,7 @@ luma microservice-version exec "alembic revision -m Example"
   When using an editable container, you must click the refresh button to see the file that is created by the alembic command.
 
 This will generate a file inside app/alembic/versions. Inside this file, we will specify the upgrade and downgrade functions.
+In the generated file (located under /app/alembic/versions) make sure the upgrade / downgrade methods are defined as follows:
 ```python
 def upgrade():
     op.create_table('stuff',
@@ -31,6 +32,7 @@ luma microservice-version exec "alembic upgrade head"
 
 Then, we will define a model to represent a record inside of the stuff table. It belongs in the models directory.
 ```python
+# /app/models/service.py
 from app import db
 
 class Thing(db.Model):
@@ -52,8 +54,23 @@ class Thing(db.Model):
         }
 
 ```
-Finally, we must add routes to get, post, put, and delete these objects.
+
+Next, we create a controller to house any business logic for this object.  In this example we will be performing very stabdard
+actions, so we will inherit from a base controller and will not need to override any methods.
 ```python
+# /app/controllers/service.py
+from lumavate_service_util import RestBehavior
+from models import Thing
+
+class Thing(RestBehavior):
+  def __init__(self):
+    super().__init__(Thing)
+```
+
+
+Finally, we must add routes to get, post, put, and delete these objects.  It's standard for the servide to support a '/' route, which provides a preview when viewed from within the designer.
+```python
+# /app/routes/service.py
 from lumavate_service_util import lumavate_route, SecurityType, RequestType
 from flask import render_template, g
 from controllers import Thing
