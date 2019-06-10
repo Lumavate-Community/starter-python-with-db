@@ -29,7 +29,7 @@ Then, run the following command to upgrade the table.
 luma microservice-version exec "alembic upgrade head"
 ```
 
-Then, we will define a model to represent a record inside of the stuff table. It belongs in the models directory.
+Then, we will define a model to represent a record inside of the 'thing' table. It belongs in the models directory.
 ```python
 # /app/models/service.py
 
