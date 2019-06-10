@@ -115,7 +115,7 @@ You can read more about the container utility libraries at https://developer.lum
 Once this service is brought into an experience, it will be made available automatically via a JavaScript variable.  Following are example of how you can invoke the POST and GET routes, respectively:
 
 ```javascript
-// Note m_service will be replaced with whatver your actual service name
+// Note m_service will be replaced with your actual service name
 
 m_service.post('/things', data=JSON.stringify({'name': 'foo'}));
 
