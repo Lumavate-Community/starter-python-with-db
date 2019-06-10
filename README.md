@@ -32,6 +32,8 @@ luma microservice-version exec "alembic upgrade head"
 
 Then, we will define a model to represent a record inside of the stuff table. It belongs in the models directory.
 ```python
+# /app/models/service.py
+
 from flask import g
 from app import db
 from lumavate_service_util import make_id
@@ -61,6 +63,7 @@ Next, we create a controller to house any business logic for this object.  In th
 actions, so we will inherit from a base controller and will not need to override any methods.
 ```python
 # /app/controllers/service.py
+
 from lumavate_service_util import RestBehavior
 import models
 
@@ -106,6 +109,20 @@ You may access this command in VScode through the command pallette. (ctrl-shift-
 
 
 You can read more about the container utility libraries at https://developer.lumavate.com
+
+### Usage from Pagebuilder
+
+Once this service is brought into an experience, it will be made available automatically via a JavaScript variable.  Following are example of how you can invoke the POST and GET routes, respectively:
+
+```javascript
+// Note m_service will be replaced with whatver you actual service name is
+
+m_service.post('/things', data=JSON.stringify({'name': 'foo'}));
+
+m_service.get('/things').then( (resp) => {
+  console.log(resp);
+})
+```
 
 
 
