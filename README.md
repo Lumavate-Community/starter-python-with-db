@@ -1,8 +1,7 @@
-
-
+## Requirements
+You will need to set a valid Postgres connect string for the DATABASE_URL environment variable for this example to work.
 
 ## Adding a RESTful object
-
 This is a guide to adding a restful object with a single property, name, within a python microservice.
 
 To add a restful object, the first step is to add a migration. To add a migration, execute the following alembic command:
@@ -10,7 +9,7 @@ To add a restful object, the first step is to add a migration. To add a migratio
 luma microservice-version exec "alembic revision -m Example"
 ```
 ### IMPORTANT:
-  When using an editable container, you must click the refresh button to see the file that is created by the alembic command.
+When using an editable container, you must click the refresh button to see the file that is created by the alembic command.
 
 This will generate a file inside app/alembic/versions. Inside this file, we will specify the upgrade and downgrade functions.
 In the generated file (located under /app/alembic/versions) make sure the upgrade / downgrade methods are defined as follows:
