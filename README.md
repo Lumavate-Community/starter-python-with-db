@@ -54,6 +54,14 @@ class Thing(db.Model):
 ```
 Finally, we must add routes to get, post, put, and delete these objects.
 ```python
+from lumavate_service_util import lumavate_route, SecurityType, RequestType
+from flask import render_template, g
+from models import Thing
+
+@lumavate_route('/', ['GET'], RequestType.page, [SecurityType.jwt])
+def root():
+  return render_template('home.html', logo='/{}/{}/discover/icons/microservice.png'.format(g.integration_cloud, g.widget_type))
+
 @lumavate_route('/things', ['GET','POST'], RequestType.api, [SecurityType.none])
 def allthings():
   if request.method == 'GET':
