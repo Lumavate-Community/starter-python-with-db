@@ -58,8 +58,7 @@ class Thing(db.Model):
 
 ```
 
-Next, we create a controller to house any business logic for this object.  In this example we will be performing very stabdard
-actions, so we will inherit from a base controller and will not need to override any methods.
+Next, we create a controller to house any business logic for this object.  In this example we will be performing very standard actions, so we will inherit from a base controller and will not need to override any methods.
 ```python
 # /app/controllers/service.py
 
