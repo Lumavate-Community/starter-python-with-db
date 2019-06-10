@@ -16,14 +16,14 @@ This will generate a file inside app/alembic/versions. Inside this file, we will
 In the generated file (located under /app/alembic/versions) make sure the upgrade / downgrade methods are defined as follows:
 ```python
 def upgrade():
-    op.create_table('stuff',
+    op.create_table('thing',
         sa.Column('id', sa.BigInteger, primary_key=True),
         sa.Column('name', sa.String(250), nullable=False),
         sa.Column('org_id', sa.BigInteger)
     )
 
 def downgrade():
-    op.drop_table('stuff')
+    op.drop_table('thing')
 ```
 Then, run the following command to upgrade the table.
 ```bash
@@ -32,8 +32,9 @@ luma microservice-version exec "alembic upgrade head"
 
 Then, we will define a model to represent a record inside of the stuff table. It belongs in the models directory.
 ```python
-# /app/models/service.py
+from flask import g
 from app import db
+from lumavate_service_util import make_id
 
 class Thing(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
@@ -43,6 +44,7 @@ class Thing(db.Model):
     @classmethod
     def get_all(cls):
         return cls.query.filter_by(org_id = g.org_id)
+
     @classmethod
     def get(cls, id):
         return cls.get_all().filter_by(id=id).first()
@@ -60,19 +62,20 @@ actions, so we will inherit from a base controller and will not need to override
 ```python
 # /app/controllers/service.py
 from lumavate_service_util import RestBehavior
-from models import Thing
+import models
 
 class Thing(RestBehavior):
   def __init__(self):
-    super().__init__(Thing)
+    super().__init__(models.Thing)
 ```
 
 
 Finally, we must add routes to get, post, put, and delete these objects.  It's standard for the servide to support a '/' route, which provides a preview when viewed from within the designer.
 ```python
 # /app/routes/service.py
+
 from lumavate_service_util import lumavate_route, SecurityType, RequestType
-from flask import render_template, g
+from flask import render_template, g, request
 from controllers import Thing
 
 @lumavate_route('/', ['GET'], RequestType.page, [SecurityType.jwt])
